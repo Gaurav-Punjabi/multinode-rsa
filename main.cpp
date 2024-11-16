@@ -4,17 +4,9 @@
 #include <omp.h>
 #include "includes/utils.h"
 #include "includes/key_generator.h"
+#include "includes/rsa.h"
 
 using namespace std;
-
-int encrypt(int public_key, int e, int message) {
-  return mod_exp(message, e, public_key);
-}
-
-
-int decrypt(int private_key, int public_key, int cipher) {
-  return mod_exp(cipher, private_key, public_key);
-}
 
 int main() {
   double start_time, end_time, encryption_time, decryption_time;
@@ -37,7 +29,7 @@ int main() {
         #pragma omp for
         for (int i = 0; i < input.length(); i++) {
             int message = input[i];
-            int cipher = encrypt(key->public_key, key->e, message);
+            int cipher = encrypt(key, message);
 
             // Append the result to the thread's local stringstream
             local_cipher_text << cipher << " ";
@@ -73,13 +65,13 @@ int main() {
 
   start_time = omp_get_wtime();
   while(iss >> num) {
-    int decrypted_message = decrypt(key->private_key, key->public_key, num);
+    int decrypted_message = decrypt(key, num);
     decrypted_text.push_back((char)decrypted_message);
   }
   end_time = omp_get_wtime();
   decryption_time = end_time - start_time;
 
-  cout << "\bTotal decryption time taken : " << decryption_time;
+  cout << "\nTotal decryption time taken : " << decryption_time << endl;
 
   // cout << "\nThe original message was : " << message; 
   // long cipher = encrypt(modulus, e, message);

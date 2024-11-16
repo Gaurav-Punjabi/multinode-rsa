@@ -1,10 +1,10 @@
 CXX=g++
 CXX_FLAGS= -I./includes
 
-default: test
+default: main
 
-test: 
-	${CXX} ${CXX_FLAGS} -O3 -o test test.cpp utils.cpp key_generator.cpp -fopenmp
+main: 
+	${CXX} ${CXX_FLAGS} -O3 -o main main.cpp utils.cpp key_generator.cpp rsa.cpp -fopenmp
 
 clean:
-	rm -f test
+	rm -f main
