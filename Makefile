@@ -1,16 +1,9 @@
 CXX=g++
-CXXFLAGS = -Wall -Wextra -02
 
-TARGET = test
+default: test
 
-SRCS = test.cpp
-
-OBJS = $(SRCS.cpp=.o)
-
-all: $(TARGET)
-
-$(TARGET): $(SRCS)
-  $(CXX) $(CXXFLAGS) -o $(TARGET) $(SRCS)
+test: 
+	${CXX} -O3 -o test test.cpp
 
 clean:
-  rm -rf $(TARGET) $(OBJS)
+	rm -f test
