@@ -1,7 +1,6 @@
 #include <iostream>
 #include <sstream>
 #include <cmath>
-#include <stdexcept>
 #include <omp.h>
 #include "includes/utils.h"
 #include "includes/key_generator.h"
@@ -19,12 +18,8 @@ int decrypt(int private_key, int public_key, int cipher) {
 
 int main() {
   double start_time, end_time, encryption_time, decryption_time;
-  int p = 61, q = 53;
-  int e = 65537;
-  int modulus = compute_modulus(p, q);
-  int eulers_totient = compute_eulers_totient(p, q);
-  int private_key = mod_inverse(e, eulers_totient);
-  size_t string_length = 99999999;
+  struct Key* key = generate_key();
+  size_t string_length = 999;
   string input = generate_long_string(string_length);
 
   string cipher_text = "";
@@ -42,7 +37,7 @@ int main() {
         #pragma omp for
         for (int i = 0; i < input.length(); i++) {
             int message = input[i];
-            int cipher = encrypt(modulus, e, message);
+            int cipher = encrypt(key->public_key, key->e, message);
 
             // Append the result to the thread's local stringstream
             local_cipher_text << cipher << " ";
@@ -78,7 +73,7 @@ int main() {
 
   start_time = omp_get_wtime();
   while(iss >> num) {
-    int decrypted_message = decrypt(private_key, modulus, num);
+    int decrypted_message = decrypt(key->private_key, key->public_key, num);
     decrypted_text.push_back((char)decrypted_message);
   }
   end_time = omp_get_wtime();

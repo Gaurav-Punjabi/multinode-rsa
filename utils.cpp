@@ -1,3 +1,5 @@
+#include <stdexcept>
+#include <cstring>
 #include "includes/utils.h"
 
 int compute_modulus(int p, int q) {
@@ -23,7 +25,7 @@ int mod_inverse(int e, int eulers_totient) {
         r = temp_r;
     }
 
-    if (r > 1) throw invalid_argument("e is not invertible");
+    if (r > 1) throw std::invalid_argument("e is not invertible");
     if (t < 0) t += eulers_totient;
 
     return t;
@@ -45,8 +47,9 @@ int mod_exp(unsigned long long base, unsigned long long exp, unsigned long long 
 
     return (int)result;
 }
-string generate_long_string(size_t length) {
-  string long_string(length, 'A');
+
+std::string generate_long_string(size_t length) {
+  std::string long_string(length, 'A');
   return long_string;
 }
 

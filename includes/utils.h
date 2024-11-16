@@ -1,6 +1,7 @@
 #ifndef UTILS_HEADER
 #define UTILS_HEADER
 #include <cstring>
+#include <stdexcept>
 
 int compute_modulus(int p, int q);
 
