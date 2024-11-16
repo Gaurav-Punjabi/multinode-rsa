@@ -9,7 +9,7 @@ struct Key {
   int e;
 };
 
-struct Key* generate_key(int p, int q);
+struct Key* generate_key();
 
 #endif // !KEY_GENERATOR_HEADER
 
