@@ -1,4 +1,5 @@
 #include "includes/rsa.h"
+#include <iostream>
 
 int encrypt(struct Key* key, int message) {
   return mod_exp(message, key->e, key->public_key);

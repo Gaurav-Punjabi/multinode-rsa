@@ -21,6 +21,17 @@ std::string read_file(std::string path) {
   return file_contents;
 }
 
+void write_file(std::string path, std::string content) {
+  std::ofstream file(path, std::ios::out);
+  if(!file.is_open()) {
+    std::cerr << "Error: could not open file on path " << path << std::endl;
+  }
+
+  file << content;
+
+  file.close();
+}
+
 std::vector<std::string> get_files(std::string target_dir) {
   std::vector<std::string> file_list;
   try {
