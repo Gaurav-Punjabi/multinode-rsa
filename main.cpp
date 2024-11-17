@@ -1,44 +1,68 @@
 #include <iostream>
 #include <sstream>
-#include <omp.h>
-#include "includes/utils.h"
 #include "includes/key_generator.h"
 #include "includes/rsa_processor_serial.h"
 #include "includes/rsa_processor_openmp.h" 
 
 using namespace std;
 
-int main() {
-  string input_text, cipher_text, decrypted_text;
-  double start_time, end_time, encryption_time, decryption_time;
-  struct Key* key = generate_key();
-  size_t string_length = 999;
-  
-  // input_text = generate_long_string(string_length);
-  input_text = "Hello";
-  cout << "The input text is : " << input_text << endl;
+int main(int argc, char** argv) {
+  int world_size, world_rank, file_count;
+  vector<string> file_list;
+  vector<int> displacements, counts;
+  string target_dir;
 
-  // Encryption
-  start_time = omp_get_wtime();
-  cipher_text = encrypt_string(key, input_text, 4);
-  end_time = omp_get_wtime();
-  encryption_time = end_time - start_time;
-  
-  cout << "The cipher text is : " << cipher_text << endl;
+  MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
-  // Decryption
-  start_time = omp_get_wtime();
-  decrypted_text = decrypt_string(key, cipher_text, 4);
-  end_time = omp_get_wtime();
-  decryption_time = end_time - start_time;
+  if(argc < 2) {
+    if(world_rank == MASTER_WORLD) { 
+      cerr << "Invalid arguments passed. Directory name is required" << endl;
+      MPI_Finalize();
+    }
+    return 1;
+  }
 
-  cout << "The decrypted text is : " << decrypted_text << endl;
+  // Getting the list of files present in the given directory
+  if(world_rank == MASTER_WORLD) {
+    target_dir = argv[1];
+    file_list = get_files(target_dir);
+    file_count = file_list.size();
+  }
 
-  cout << "The encryption time is " << encryption_time << endl;
 
-  cout << "The decryption time is " << decryption_time << endl;
-
-  cout << "\nTotal decryption time taken : " << decryption_time << endl;
-
+  MPI_Finalize();
   return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

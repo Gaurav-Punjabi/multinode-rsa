@@ -1,7 +1,7 @@
 #ifndef KEY_GENERATOR_HEADER
 #define KEY_GENERATOR_HEADER
 
-#include "utils.h"
+#include "math_utils.h"
 #include <cstring>
 
 struct Key {

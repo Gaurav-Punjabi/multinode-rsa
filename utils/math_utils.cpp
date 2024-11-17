@@ -1,6 +1,6 @@
 #include <stdexcept>
 #include <cstring>
-#include "includes/utils.h"
+#include "../includes/math_utils.h"
 
 int compute_modulus(int p, int q) {
   return p * q;
@@ -47,10 +47,4 @@ int mod_exp(unsigned long long base, unsigned long long exp, unsigned long long 
 
     return (int)result;
 }
-
-std::string generate_long_string(size_t length) {
-  std::string long_string(length, 'A');
-  return long_string;
-}
-
 

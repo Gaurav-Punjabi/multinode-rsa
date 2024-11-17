@@ -1,7 +1,7 @@
 #ifndef RSA_HEADER
 #define RSA_HEADER
 
-#include "utils.h"
+#include "math_utils.h"
 #include "key_generator.h"
 
 int encrypt(struct Key* key, int message);
