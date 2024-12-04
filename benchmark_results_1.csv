@@ -1,0 +1,9 @@
+Dataset,Operation,MPI_Tasks,Total_Runtime(s),Process_Runtime(s)
+large_few,encrypt,8,23.4014,21.6338
+large_few,decrypt,8,20.9231,18.7813
+large_many,encrypt,8,53.981,48.3647
+large_many,decrypt,8,48.2331,42.0635
+small_few,encrypt,8,2.76001,2.41247
+small_few,decrypt,8,3.16178,2.7327
+small_many,encrypt,8,3.83359,3.3345
+small_many,decrypt,8,3.26684,2.77025
