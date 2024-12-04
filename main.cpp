@@ -2,6 +2,7 @@
 #include <sstream>
 #include <vector>
 #include <mpi.h>
+#include <chrono>
 
 #include "includes/utils.h"
 #include "includes/file_utils.h"
@@ -34,6 +35,8 @@ int main(int argc, char** argv) {
     return 1;
   }
 
+  auto total_start = std::chrono::high_resolution_clock::now();
+  auto process_time = std::chrono::duration<double>(0);
   // Getting the list of files present in the given directory
   if(world_rank == MASTER_WORLD) {
     string operation_type = argv[1];
@@ -89,15 +92,27 @@ int main(int argc, char** argv) {
   for(string file : local_file_list) {
     string file_content = read_file(file);
     string new_content;
+
+    auto process_start = std::chrono::high_resolution_clock::now();
     if(needs_encryption) {
-      new_content = encrypt_string(local_key, file_content);
+      new_content = encrypt_string(local_key, file_content, 4);
     } else {
-      new_content = decrypt_string(local_key, file_content);
+      new_content = decrypt_string(local_key, file_content, 4);
     }
+    auto process_end = std::chrono::high_resolution_clock::now();
+    process_time += process_end - process_start;
 
     write_file(file, new_content);
   }
 
   MPI_Finalize();
+  auto total_end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> total_duration = total_end - total_start;
+
+  if(world_rank == MASTER_WORLD) {
+      std::cout << "Total execution time: " << total_duration.count() << " seconds" << std::endl;
+      std::cout << "Encryption/Decryption time: " << process_time.count() << " seconds" << std::endl;
+  }
+
   return 0;
 }
