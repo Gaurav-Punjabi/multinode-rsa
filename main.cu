@@ -9,6 +9,10 @@
 #include "includes/key_generator.h"
 #include "includes/rsa_processor_serial.h"
 #include "includes/rsa_processor_openmp.h" 
+#include "includes/rsa_processor_cuda.h"
+
+#define BLOCK_SIZE 256
+
 
 using namespace std;
 
@@ -90,9 +94,9 @@ int main(int argc, char** argv) {
     string file_content = read_file(file);
     string new_content;
     if(needs_encryption) {
-      new_content = encrypt_string(local_key, file_content);
+      new_content = encrypt_string_gpu(local_key, file_content, BLOCK_SIZE);
     } else {
-      new_content = decrypt_string(local_key, file_content);
+      new_content = decrypt_string_gpu(local_key, file_content, BLOCK_SIZE);
     }
 
     write_file(file, new_content);
