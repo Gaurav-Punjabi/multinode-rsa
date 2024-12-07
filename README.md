@@ -59,6 +59,9 @@ To decrypt files inside a directory:
 
 ---
 
+### **Dataset to test**
+Use test folder, it has some files that can be used to test the program.
+
 ## Steps to Record RSA Performance
 
 The project includes a utility to record the performance of the RSA algorithm, implemented in `record_rsa_performance.cpp`.
