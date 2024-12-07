@@ -9,7 +9,7 @@
 #include "includes/key_generator.h"
 #include "includes/rsa_processor_serial.h"
 #include "includes/rsa_processor_openmp.h" 
-#include "includes/rsa_processor_cuda.h"
+// #include "includes/rsa_processor_cuda.h"
 
 #define BLOCK_SIZE 256
 
@@ -94,9 +94,19 @@ int main(int argc, char** argv) {
     string file_content = read_file(file);
     string new_content;
     if(needs_encryption) {
-      new_content = encrypt_string_gpu(local_key, file_content, BLOCK_SIZE);
+      // Below line calls the encryption processor using OpenMP
+      new_content = encrypt_string(local_key, file_content, 4);
+      // Uncomment the below line to run encryption using serial processor without OpenmMP / CUDA
+      // new_content = encrypt_string(local_key, file_content);
+      // Uncomment the below line to run encryption using CUDA GPU      
+      // new_content = encrypt_string_gpu(local_key, file_content, 16);
     } else {
-      new_content = decrypt_string_gpu(local_key, file_content, BLOCK_SIZE);
+      // Below line calls the de-cryption processor using OpenMP
+      new_content = decrypt_string(local_key, file_content, 4);
+      // Uncomment the below line to run decryption using serial processor without OpenMP / CUDA
+      // new_content = decrypt_string(local_key, file_content);
+      // Uncomment the below line to run decryption using CUDA GPU
+      // new content = decrypt_string_gpu(local_key, file_content, 16);
     }
 
     write_file(file, new_content);
